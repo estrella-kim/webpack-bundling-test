@@ -25,11 +25,11 @@ function getEntries (){
 
 gulp.task("build", function(){
 
-	return gulp.src([
-			"./src/**/*.js",
-		])
-		.pipe(babel())
-		.pipe(ngAnnotate())
+	return gulp.src(
+			"./src/**/*.js"
+		)
+		//.pipe(babel())
+		//.pipe(ngAnnotate())
 		/*.pipe(minify({
 			ext : {
 				source : '.js',
@@ -43,7 +43,23 @@ gulp.task("build", function(){
 			},
 			entry : glob.sync('./ctrl/*.js'),
 			watch : false,
-			plugins : [new UglifyJsPlugin()]
+			module : {
+				rules : [
+					{
+						test : /\.js$/,
+						loader : 'babel-loader'
+					}
+				]
+			}
+			/*plugins : [
+				new UglifyJsPlugin({
+					test : /\.js$/,
+					uglifyOptions : {
+						ecma : 5,
+						mangle : false
+					}
+				})
+			]*/
 		}))
 		.pipe(gulp.dest("./release/"))
 })
